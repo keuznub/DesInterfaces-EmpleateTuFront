@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react'
-import { getUsers } from '../services/userService'
+import { getOffers } from '../services/offerService'
 
-function UserList() {
-    interface User{
+function OfferList() {
+    interface Offer{
         id: number
-        name: string
-        surname: string
-        role: string
-        course: string
-        email: string
+        title: string
+        description: string
         active: boolean
-        accepNotifications: boolean
+        contactEmail: string
+        location: string
+        published: Date
+        expired: Date
+        
     }
 
-    const [users,setUsers] = useState<User[]>([])
+    const [offers,setOffers] = useState<Offer[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [message,setMessage] = useState("")
 
@@ -21,8 +22,8 @@ function UserList() {
     useEffect(()=>{
         async function call() {
             try{
-                const userList : User[]= await getUsers()
-                userList.length>0&&setUsers(userList)
+                const offerList : Offer[]= await getOffers()
+                offerList.length>0&&setOffers(offerList)
             }catch(error){
                 if(error instanceof Error)
                 setMessage(error.message)
@@ -45,39 +46,27 @@ function UserList() {
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" className="px-6 py-3">
-                            Nombre
+                            Title
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Apellido
+                            Description
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Email
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            Rol
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            Curso
+                            ContactEmail
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map(user =>
-                        <tr key={user.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                    {offers.map(offer =>
+                        <tr key={offer.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {user.name}
+                                {offer.title}
                             </th>
                             <td className="px-6 py-4">
-                                {user.surname}
+                                {offer.description}
                             </td>
                             <td className="px-6 py-4">
-                                {user.email}
-                            </td>
-                            <td className="px-6 py-4">
-                                {user.role}
-                            </td>
-                            <td className="px-6 py-4">
-                                {user.course}
+                                {offer.contactEmail}
                             </td>
                         </tr>
                     )}
@@ -90,4 +79,4 @@ function UserList() {
 
 }
 
-export default UserList
+export default OfferList

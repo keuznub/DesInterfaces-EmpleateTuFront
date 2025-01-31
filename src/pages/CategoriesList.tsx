@@ -21,8 +21,9 @@ function UserList() {
     useEffect(()=>{
         async function call() {
             try{
-                const userList : User[]= await getUsers()
-                userList.length>0&&setUsers(userList)
+                const userList = await getUsers()
+                console.log("USERLIST:"+userList)
+                setUsers(userList)
             }catch(error){
                 if(error instanceof Error)
                 setMessage(error.message)
